@@ -134,7 +134,7 @@ const getAllProperties = function (options, limit = 10) {
   let queryString = `
   SELECT properties.*, avg(property_reviews.rating) as average_rating
   FROM properties
-  JOIN property_reviews ON properties.id = property_id
+  JOIN property_reviews ON properties.id = property_reviews.property_id
   `;
 
   // 3
@@ -146,7 +146,7 @@ const getAllProperties = function (options, limit = 10) {
   if (options.owner_id) {
     // If there are other search filters added then add AND clause otherwise add WHERE clause
     queryParams.length ? (queryString += `AND `) : (queryString += `WHERE `);
-    queryParams.push(`%${options.owner_id}%`);
+    queryParams.push(options.owner_id);
     queryString += `properties.owner_id = $${queryParams.length} `;
   }
   // minimum_price_per_night
